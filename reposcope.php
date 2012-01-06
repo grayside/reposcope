@@ -11,6 +11,7 @@ class RepoScope {
   var $tool_path;
   var $context;
   var $options = array();
+  var $cache = array();
 
   function __construct($context = NULL, $tool_path = NULL) {
     $this->context = $context;
@@ -21,18 +22,19 @@ class RepoScope {
    * Execute the specified git command.
    */
   public function cmd($command, $reset = FALSE) {
-    static $cmds;
-
-    if (!isset($cmds) || $reset) {
-      $cmds = array();
-    }
-
-    if (!isset($cmds[$command])) {
+    if (!isset($this->cache[$command]) || $reset) {
       $command = $this->tool_path . ' ' . $this->buildOptions($reset) . ' ' . $command;
-      $cmds[$command] = exec($command);
+      $this->cache[$command] = exec($command);
     }
 
-    return $cmds[$command];
+    return $this->cache[$command];
+  }
+
+  /**
+   * Reset command cache.
+   */
+  public function cacheClear() {
+    $this->cache = array();
   }
 
   /**
