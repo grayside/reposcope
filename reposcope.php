@@ -61,6 +61,7 @@ class RepoScope {
    */
   public function setOpt($name, $value) {
     $this->options[$name] = $value;
+    return $this;
   }
 
   /**
@@ -69,7 +70,7 @@ class RepoScope {
   public function getOpt($name) {
     return isset($this->options[$name]) ? $this->options[$name] : NULL;
   }
-  
+
   /**
    * Set a tool to use for command running.
    *
@@ -77,6 +78,7 @@ class RepoScope {
    */
   public function setTool($path) {
     $this->tool_path = $path;
+    return $this;
   }
 
   /**
@@ -124,7 +126,7 @@ class GitScope extends RepoScope {
         return FALSE;
       }
       $this->setOpt('work-tree', $repo);
-      $this->setOpt('git-dir', $repo . '/.git');      
+      $this->setOpt('git-dir', $repo . '/.git');
     }
   }
 
